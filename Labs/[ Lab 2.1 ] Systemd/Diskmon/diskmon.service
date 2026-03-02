@@ -1,0 +1,43 @@
+
+[Unit]
+Description=Disk Usage Monitoring Agent
+Documentation=https://github.com/smitja21/group-a-oe2/wiki/%%5B-Lab-2.1-%%5D-Systemd
+# Start after the system is fully booted and filesystems are mounted
+After=local-fs.target
+# We want network available but won't fail if it isn't
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+# Run as non-root system user
+User=diskmon
+Group=diskmon
+
+# Load configuration from environment file
+EnvironmentFile=/etc/diskmon.env
+
+# Full path to the executable file (required)
+ExecStart=/opt/diskmon/diskmon.sh
+
+# Restart the service if it exits unexpectedly
+# on-failure: restart on non-zero exit or signal; not on clean exit
+Restart=on-failure
+RestartSec=10s
+
+# Tag log entries in the journal
+SyslogIdentifier=diskmon
+
+# Redirect stdout/stderr to journal
+StandardOutput=journal
+StandardError=journal
+
+# Timeout: if service doesn't start within 30s. mark as failed
+TimeoutStartSec=30s
+
+# Give the process 15 seconds to shut down cleanly before SIGKILL
+TimeoutStopSec=15s
+
+[Install]
+# Start at a normal system boot (multi-user mode)
+WantedBy=multi-user.target
+
