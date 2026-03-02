@@ -1,0 +1,10 @@
+[Unit]
+Description=Hello World Service
+Documentation=https://www.freedesktop.org/wiki/Software/systemd/
+After=systemd-user-sessions.service
+[Service]
+SyslogIdentifier=MyFirstService
+Type=simple
+ExecStart=/home/group-a/hello.sh
+[Install]
+WantedBy=multi-user.target
