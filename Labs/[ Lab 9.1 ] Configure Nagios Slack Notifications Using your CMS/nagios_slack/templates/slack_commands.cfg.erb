@@ -1,0 +1,29 @@
+# /etc/nagios4/conf.d/slack_commands.cfg
+# Managed by Puppet -- do NOT edit manually.
+# Defines the notify-service-by-slack and notify-host-by-slack commands.
+# Generated for: <%= @facts['networking']['fqdn'] %>
+# Service notification command
+# Called when a service check reaches HARD state and the contact's
+# service_notification_commands includes notify-service-by-slack
+define command {
+  command_name notify-service-by-slack
+  command_line /usr/lib/nagios/plugins/nagios.pl \
+  -field slack_channel=#group-a \
+  -field HOSTALIAS="$HOSTNAME$" \
+  -field SERVICEDESC="$SERVICEDESC$" \
+  -field SERVICESTATE="$SERVICESTATE$" \
+  -field SERVICEOUTPUT="$SERVICEOUTPUT$" \
+  -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+  }
+# Host notification command
+# Called when a host's UP/DOWN state changes and the contact's
+# host_notification_commands includes notify-host-by-slack
+define command {
+  command_name notify-host-by-slack
+  command_line /usr/lib/nagios/plugins/nagios.pl \
+  -field slack_channel=#your-channel \
+  -field HOSTALIAS="$HOSTNAME$" \
+  -field HOSTSTATE="$HOSTSTATE$" \
+  -field HOSTOUTPUT="$HOSTOUTPUT$" \
+  -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+}
